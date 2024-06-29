@@ -3,13 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta SEO Inspector</title>
+    <title>Análise SEO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        #seo-results {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Análise SEO de Página</h1>
+    <h1>Análise de SEO</h1>
     <form id="seo-form">
-        <label for="url-input">URL:</label>
-        <input type="text" id="url-input" placeholder="Insira a URL da página">
+        <label for="url-input">Insira a URL para Análise:</label>
+        <br>
+        <input type="text" id="url-input" placeholder="http://www.exemplo.com">
         <button type="submit">Analisar</button>
     </form>
     <div id="seo-results">

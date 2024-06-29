@@ -10,7 +10,7 @@ document.getElementById('seo-form').addEventListener('submit', function(event) {
 
 async function fetchSEOData(url) {
     try {
-        const response = await fetch(`/api/seo?url=${encodeURIComponent(url)}`); // Rota do backend que retorna os dados SEO
+        const response = await fetch(`/api/seo?url=${encodeURIComponent(url)}`);
         const data = await response.json();
         displaySEOData(data);
     } catch (error) {
