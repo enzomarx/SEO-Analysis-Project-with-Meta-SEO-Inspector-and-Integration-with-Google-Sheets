@@ -1,16 +1,23 @@
-from flask import Flask, jsonify, request
-import requests
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Rota para obter dados da API do Meta SEO Inspector
-@app.route('/api/seo')
+@app.route('/api/seo', methods=['GET'])
 def get_seo_data():
     url = request.args.get('url')
-    api_url = f'https://www.metaseoapi.com/api/meta?url={url}'
-    response = requests.get(api_url)
-    data = response.json()
-    return jsonify(data)
+    # Aqui você deve implementar a lógica para obter os dados SEO da URL fornecida
+    # Exemplo de dados fictícios para teste:
+    seo_data = {
+        'url': url,
+        'title': 'Título da Página',
+        'description': 'Descrição da Página',
+        'links': {
+            'total': 10,
+            'internal': 7,
+            'external': 3
+        }
+    }
+    return jsonify(seo_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
