@@ -1,0 +1,2 @@
+--add func para exportar em formato de tabela sheets or pdf or csv
+--calculadora de score revisão

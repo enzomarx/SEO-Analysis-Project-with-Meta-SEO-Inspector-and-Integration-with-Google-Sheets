@@ -20,7 +20,7 @@ def get_main_keywords(html_content):
         words = re.findall(r'\b\w+\b', text.lower())
         word_count = {}
         for word in words:
-            if len(word) > 3:  # considerando apenas palavras com mais de 3 caracteres
+            if len(word) > 3:  # considerando só palavras + de 3 caracteres
                 word_count[word] = word_count.get(word, 0) + 1
         sorted_words = sorted(word_count.items(), key=lambda x: x[1], reverse=True)
         return sorted_words[:5]  # retornar as 5 palavras mais frequentes
