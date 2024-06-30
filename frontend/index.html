@@ -3,67 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise SEO</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-        }
-        #seo-results {
-            margin-top: 20px;
-        }
-    </style>
+    <title>Análise de SEO</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>Análise de SEO</h1>
-    <form id="seo-form">
-        <label for="url-input">Insira a URL para Análise:</label>
-        <br>
-        <input type="text" id="url-input" placeholder="http://www.exemplo.com">
-        <button type="submit">Analisar</button>
-    </form>
-    <div id="seo-results">
-        <!-- Resultados da análise SEO serão inseridos aqui dinamicamente -->
+    <div class="container">
+        <h1>Análise de SEO</h1>
+        <form id="seo-form">
+            <label for="url-input">Insira a URL para Análise:</label>
+            <input type="text" id="url-input" name="url" placeholder="https://example.com">
+            <button type="submit" id="analyze-btn">Analisar</button>
+        </form>
+
+        <div id="seo-results" style="display: none;">
+            <h2>Resultados para <span id="seo-url"></span></h2>
+            <p id="title">Title: <span id="seo-title">N/A</span></p>
+            <p id="description">Description: <span id="seo-description">N/A</span></p>
+            <p id="total-links">Total de Links: <span id="seo-total-links">N/A</span></p>
+            <p id="internal-links">Links Internos: <span id="seo-internal-links">N/A</span></p>
+            <p id="external-links">Links Externos: <span id="seo-external-links">N/A</span></p>
+            <p id="load-time">Velocidade de Carregamento da Página: <span id="seo-load-time">N/A</span></p>
+            <p id="keywords">Palavras-chave Principais: <span id="seo-keywords">N/A</span></p>
+            <p id="mobile-compatibility">Compatibilidade Móvel: <span id="seo-mobile-compatibility">N/A</span></p>
+            <p id="error-message" class="error-message" style="display: none;"></p>
+        </div>
     </div>
 
-    <script>
-        document.getElementById('seo-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const url = document.getElementById('url-input').value.trim();
-            if (url === '') {
-                alert('Por favor, insira uma URL válida.');
-                return;
-            }
-            fetchSEOData(url);
-        });
-
-        async function fetchSEOData(url) {
-            try {
-                const response = await fetch(`/api/seo?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-                displaySEOData(data);
-            } catch (error) {
-                console.error('Erro ao buscar dados SEO:', error);
-            }
-        }
-
-        function displaySEOData(seoData) {
-            const seoResults = document.getElementById('seo-results');
-            seoResults.innerHTML = `
-                <h2>Resultados para ${seoData.url}</h2>
-                <p>Title: ${seoData.title}</p>
-                <p>Description: ${seoData.description}</p>
-                <p>Total de Links: ${seoData.links.total}</p>
-                <p>Links Internos: ${seoData.links.internal}</p>
-                <p>Links Externos: ${seoData.links.external}</p>
-            `;
-        }
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

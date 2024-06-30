@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise SEO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #url-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #seo-results {
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        #seo-results p {
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            /* Estilos para telas menores */
+            #url-input {
+                font-size: 14px;
+            }
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Análise de SEO</h1>
+    <form id="seo-form">
+        <label for="url-input">Insira a URL para Análise:</label>
+        <br>
+        <input type="text" id="url-input" placeholder="http://www.exemplo.com">
+        <button type="submit">Analisar</button>
+    </form>
+    <div id="seo-results">
+        <!-- Resultados da análise SEO serão inseridos aqui dinamicamente -->
+    </div>
+
+    <script>
+        document.getElementById('seo-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const url = document.getElementById('url-input').value.trim();
+            if (url === '') {
+                alert('Por favor, insira uma URL válida.');
+                return;
+            }
+            fetchSEOData(url);
+        });
+
+        async function fetchSEOData(url) {
+            try {
+                const response = await fetch(`/api/seo?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                displaySEOData(data);
+            } catch (error) {
+                console.error('Erro ao buscar dados SEO:', error);
+                displayError('Erro ao buscar dados SEO. Por favor, verifique a URL e tente novamente.');
+            }
+        }
+
+        function displaySEOData(seoData) {
+            const seoResults = document.getElementById('seo-results');
+
+            if (seoData.error) {
+                displayError(seoData.error);
+                return;
+            }
+
+            let html = `<h2>Resultados para ${seoData.url}</h2>`;
+            
+            if (seoData.title) {
+                html += `<p>Title: ${seoData.title}</p>`;
+            } else {
+                html += `<p>Title: N/A</p>`;
+            }
+
+            if (seoData.description) {
+                html += `<p>Description: ${seoData.description}</p>`;
+            } else {
+                html += `<p>Description: N/A</p>`;
+            }
+
+            if (seoData.links && seoData.links.total !== undefined) {
+                html += `<p>Total de Links: ${seoData.links.total}</p>`;
+                html += `<p>Links Internos: ${seoData.links.internal}</p>`;
+                html += `<p>Links Externos: ${seoData.links.external}</p>`;
+            } else {
+                html += `<p>Total de Links: N/A</p>`;
+                html += `<p>Links Internos: N/A</p>`;
+                html += `<p>Links Externos: N/A</p>`;
+            }
+
+            if (seoData.page_load_time !== undefined) {
+                html += `<p>Velocidade de Carregamento da Página: ${seoData.page_load_time} segundos</p>`;
+            } else {
+                html += `<p>Velocidade de Carregamento da Página: N/A</p>`;
+            }
+
+            if (seoData.main_keywords) {
+                html += `<p>Palavras-chave Principais: ${seoData.main_keywords.map(kw => `${kw[0]} (${kw[1]} vezes)`).join(', ')}</p>`;
+            } else {
+                html += `<p>Palavras-chave Principais: N/A</p>`;
+            }
+
+            if (seoData.mobile_compatible !== undefined) {
+                html += `<p>Compatibilidade Móvel: ${seoData.mobile_compatible ? 'Sim' : 'Não'}</p>`;
+            } else {
+                html += `<p>Compatibilidade Móvel: N/A</p>`;
+            }
+
+            seoResults.innerHTML = html;
+        }
+
+        function displayError(message) {
+            const seoResults = document.getElementById('seo-results');
+            seoResults.innerHTML = `<p class="error-message">${message}</p>`;
+        }
+    </script>
+</body>
+</html>
